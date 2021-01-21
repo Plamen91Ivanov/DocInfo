@@ -1,0 +1,56 @@
+﻿@model SSN.Web.ViewModels.UserAcc.PostInUserAccViewModel
+@{
+    this.ViewData["Title"] = "Tell your  story";
+}
+<style>
+
+
+    #comment-form {
+        padding-left: 250px;
+        padding-right: 250px;
+    }
+
+    input {
+        box-shadow: 0 0 1px 1px black;
+    }
+
+    textarea {
+        box-shadow: 0 0 1px 1px black;
+    }
+</style>
+
+<div class="card-comment">
+    <div class="comment-nav">
+        <div class="comment-creator">
+            <a href="#">
+                <h5>@Model.UserUserName</h5>
+            </a>
+        </div>
+        <div class="comment-rating">
+            <h5>@Model.CreatedOn</h5>
+        </div>
+    </div>
+    <div class="comment-description">
+        <a href="#">
+            <p>@Model.Content</p>
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h5>0 comments</h5>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var comment in Model.Comments)
+{
+    <h5>@comment.Id</h5>
+    <h5>@comment.ParentId</h5>
+    <h5>@comment.CreatedOn</h5>
+    <h4>@comment.Content</h4>
+
+}
+<hr />
+
+

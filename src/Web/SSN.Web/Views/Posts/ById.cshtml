@@ -1,0 +1,128 @@
+﻿@model SSN.Web.ViewModels.Posts.PostViewModel
+@inject SSN.Services.Data.VotePostsService VotePostsService
+
+@{
+    this.ViewData["Title"] = Model.Title;
+    void DisplayComments(int? parentId)
+    {
+        var comments = this.Model.Comments.Where(x => x.ParentId == parentId);
+
+        if (!comments.Any())
+        {
+            return;
+        }
+        @foreach (var comment in this.Model.Comments)
+        {
+            <div class="container-fluid mt-100">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="media flex-wrap w-100 align-items-center">
+                                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                                    <div class="media-body ml-3">
+                                        @comment.UserUserName
+                                        <div class="text-muted small">
+                                            <time datetime="@comment.CreatedOn.ToString("O")"></time>
+                                        </div>
+                                    </div>
+                                    <div class="text-muted small ml-3">
+                                        <button type="button" class="btn btn-secondary" onclick="showAddCommentForm(@comment.Id)"><i class="fa fa-plus"></i>&nbsp; Answer</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <article>
+                                    @Html.Raw(comment.Content)
+                                </article>
+                                @{
+                                    DisplayComments(comment.Id);
+                                }
+                            </div>
+                            <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
+                                <div class="px-4 pt-3"> <a href="javascript:void(0)" class="text-muted d-inline-flex align-items-center align-middle" data-abc="true"> <i class="fa fa-heart text-danger"></i>&nbsp; <span class="align-middle">0</span> </a> <span class="text-muted d-inline-flex align-items-center align-middle ml-4"> <i class="fa fa-eye text-muted fsize-3"></i>&nbsp; <span class="align-middle">0</span> </span> </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    }
+}
+
+@if (this.TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-success">
+        @this.TempData["InfoMessage"]
+    </div>
+}
+
+<h1>@Model.Title</h1>
+
+<div class="container-fluid mt-100">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="media flex-wrap w-100 align-items-center">
+                        <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                        <div class="media-body ml-3">
+                            @Model.UserUserName
+                            <div class="text-muted small">
+                                <time datetime="@Model.CreatedOn.ToString("O")"></time>
+                            </div>
+                        </div>
+
+                        <form id="" method="post"></form>
+                        <div class="text-muted small ml-3">
+                            <a href="#" onclick="sendPostVote(@Model.Id,true)">
+                                <div id="UpPostVotesCount">
+                                    @VotePostsService.GetVote(Model.Id)
+                                </div>&nbsp;<i class="fa fa-thumbs-up"></i>
+                            </a>
+                            <a href="#" onclick="sendPostVote(@Model.Id, false)">
+                                <div id="DownPostVotesCount">
+                                    @VotePostsService.GetDownVote(Model.Id)
+                                </div>&nbsp; <i class="fa fa-thumbs-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <article>
+                        @Html.Raw(Model.Content)
+                    </article>
+
+                    @{
+                        DisplayComments(null);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function sendPostVote(PostId, isUpVote) {
+        var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+        var json = { PostId: PostId, isUpVote: isUpVote };
+        console.log(json);
+        $.ajax({
+            url: "/api/postVotes",
+            type: "POST",
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: { 'X-CSRF-TOKEN': token },
+            success: function (data) {
+                console.log(data.upVotesCount);
+                console.log(data.downVotesCount);
+                $("#UpPostVotesCount").html(data.upVotesCount);
+                $("#DownPostVotesCount").html(data.downVotesCount);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,152 @@
+﻿
+@model SSN.Web.ViewModels.UserAcc.SearchUserViewModel
+ 
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .main {
+        display: flex;
+    }
+
+    .navigation {
+        width: 100%;
+        height: 60px;
+    }
+
+    .card-body-div {
+        display: flex;
+        padding: 5px;
+        border: 1px solid rgb(12, 194, 185);
+        box-shadow: 0 0 5px 1px rgb(12, 194, 185);
+        border-radius: 10px;
+        width: 70%;
+    }
+
+    .mail-container {
+        margin-top: 20px;
+    }
+
+    .card-body {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .card-description {
+        display: inline;
+        height: 50%;
+    }
+
+    .card-info-img {
+        width: 90%;
+        height: 25%;
+    }
+
+    .card-info {
+        display: inline;
+        width: 30%;
+        height: 50rem;
+        padding: 20px;
+    }
+
+
+    .card-comments {
+        display: block;
+        padding: 15px;
+        padding-right: 20px;
+        width: 90%;
+    }
+
+    .card-comment {
+        display: block;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 15%;
+        text-align: justify;
+    }
+
+    .comment-nav {
+        display: flex;
+        padding: 10px;
+        padding-top: 0px;
+    }
+
+    .comment-description {
+        border: 1px solid rgb(12, 194, 185);
+        box-shadow: 0 0 5px 1px rgb(12, 194, 185);
+        border-radius: 10px;
+        height: 100px;
+        padding: 10px;
+        margin: 5px;
+        margin-bottom: 10px;
+    }
+
+    .comment-creator {
+        width: 40%;
+    }
+
+    .comment-date {
+        width: 40%;
+    }
+
+    .comment-rating {
+        width: 20%;
+    }
+
+    .comment-div {
+        border: 2px solid black;
+    }
+
+    .AD {
+        border: 1px solid rgb(12, 194, 185);
+        box-shadow: 0 0 5px 1px rgb(12, 194, 185);
+        width: 30%;
+        margin-left: 20px;
+        border-radius: 10px;
+    }
+
+    #createBtn {
+        width: 95%;
+    }
+
+    .user-images{
+        width:100%;
+        height:200px;
+    }
+</style>
+
+<div class="navigation">
+
+</div>
+
+<div class="main">
+
+    <div class="card-body-div">
+        <div class="card-info">
+            <img class="card-info-img" src="~/images/man.jpg">
+            <div class="card-description">
+                <h4>Rating : 9.5</h4>
+                <h4>Name:@Model.Email</h4>
+            </div>
+        </div>
+        <div class="card-comments">
+            <div class="row">
+                @foreach (var image in Model.Photos)
+                {
+                    <div class="col-md-4">
+                         <div class="iamge-gallery">
+                             <img class="user-images" asp-append-version="true" src="/images/@image.ImagePath" />
+                         </div>
+                    </div>
+                }
+            </div> 
+        </div> 
+    </div> 
+</div>

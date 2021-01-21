@@ -1,0 +1,29 @@
+﻿@model SSN.Web.ViewModels.ApplicationUser.ApplicationUserViewModel
+
+@*<style>
+    .user-image {
+        width: 200px;
+        height: 200px;
+    }
+</style>
+  
+<form enctype="multipart/form-data" method="post" asp-controller="UserAcc" asp-action="UploadPhoto">
+    <label asp-for="Photo"></label>
+    <input asp-for="Photo" class="form-control-file" id="exampleFormControlFile1">
+    <button type="submit" class="btn btn-success btn-lg" value="search">ADD Image</button>
+</form>
+<form enctype="multipart/form-data" method="post" asp-controller="UserAcc" asp-action="UploadPhoto">
+    <label asp-for="Photo"></label>
+    <input asp-for="Photo" class="form-control-file" id="exampleFormControlFile1">
+    <button type="submit" class="btn btn-success btn-lg" value="search">ADD Profile Image</button>
+</form>
+@foreach (var image in Model.Images)
+{
+    <img class="user-image" src="~/images/@image.ImagePath" />
+}*@
+
+<div class="jumbotron jumbotron-fluid" style="margin-top:300px">
+    <div class="container" >
+        <h1 class="display-4 text-center">Очаквайте скоро !!!</h1> 
+    </div>
+</div>

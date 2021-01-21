@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SSN.Data.Models
+@model SSN.Web.ViewModels.UserAcc.PostCreateInputModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    this.ViewData["Title"] = "Напишете коментар";
+}
+<style>
+
+    #comment-form {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+
+    input {
+        box-shadow: 0 0 1px 1px black;
+    }
+
+    textarea {
+        box-shadow: 0 0 1px 1px black;
+    }
+</style>
+
+
+@if (this.SignInManager.IsSignedIn(this.User))
+{
+
+    <div class="row">
+        <div class="col text-center">
+            <div>
+                <h1>@this.ViewData["Title"]</h1>
+            </div>
+            <form id="comment-form" style="margin:0px" method="post" asp-controller="UserAcc" asp-action="AddComent">
+                <div class="form-group">
+                    <input type="hidden" name="Id" value="@ViewBag.Test" class="form-control" />
+                    <input type="hidden" name="Name" value="@ViewBag.Name" class="form-control" />
+                    <label id="comment-label" for="exampleFormControlTextarea1"></label>
+                    <textarea asp-for="Content" class="form-control" style="resize: none" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <br />
+                    <div class="row">
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-success btn-lg" value="search">Готово</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr />
+}
+else
+{
+    <div class="text-center"> 
+        <h1 class="font-italic font-weight-bold " style="margin-top:200px">Трябва да сте логнат за да можете да пишете коментар!</h1>
+        <a class="font-italic font-weight-bold text-dark" style="font-size:70px" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </div>
+}
+
+

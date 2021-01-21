@@ -1,0 +1,190 @@
+﻿
+@model SSN.Web.ViewModels.UserAcc.UserAccViewModel
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        display: inline;
+        justify-content: center;
+    }
+
+    .navigation {
+        width: 100%;
+        height: 100px;
+    }
+
+    .card-body-div {
+        display: flex;
+        margin: 5px;
+        padding: 5px;
+        border: 3px solid black;
+        box-shadow: 0 0 3px 3px rgb(46, 42, 42);
+        width: 100%;
+    }
+
+    .card-body {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .card-description {
+        display: inline;
+        height: 60%;
+    }
+
+    .card-info-img {
+        width: 90%;
+        height: 25%;
+    }
+
+    .card-info {
+        display: inline;
+        width: 20%;
+        height: 50rem;
+    }
+
+
+    .card-comments {
+        overflow: scroll;
+        display: block;
+        border: 2px solid black;
+        box-shadow: 0 0 2px 2px rgb(46, 42, 42);
+        padding: 10px;
+        padding-right: 20px;
+        width: 90%;
+    }
+
+    .card-comment {
+        display: block;
+        border: 1px solid black;
+        box-shadow: 0 0 1px 1px rgb(46, 42, 42);
+        margin-bottom: 20px;
+        width: 100%;
+        height: 20%;
+    }
+
+    .comment-nav {
+        display: flex;
+    }
+
+    .comment-description {
+        border: 1px solid black;
+        box-shadow: 0 0 1px 1px rgb(46, 42, 42);
+        height: 100px;
+        padding: 5px;
+        margin: 5px;
+        margin-bottom: 0px;
+    }
+
+    .comment-creator {
+        width: 40%;
+    }
+
+    .comment-date {
+        width: 40%;
+    }
+
+    .comment-rating {
+        width: 20%;
+    }
+
+    .comment-div {
+        border: 2px solid black;
+    }
+
+    #createBtn {
+        width: 95%;
+    }
+</style>
+
+<div class="navigation">
+
+</div>
+
+
+<div class="card-body-div">
+    <div class="card-info">
+        <img class="card-info-img" src="~/images/man.jpg">
+        <div class="card-description">
+            <h4>Rating : 9.5</h4>
+            <h4>Name:@Model.Name</h4>
+            <h5>Specialty:@Model.Specialty</h5>
+            <h5>City: @Model.City</h5>
+            <h5>About: Soon</h5>
+        </div>
+        <input type="button" id="createBtn" class="btn btn-success btn-lg" value="Create" window.location.href='@Url.Action("Create", "Home")' ; />
+    </div>
+    <div class="card-comments">
+        @foreach (var post in Model.UserPosts)
+        {
+            <div class="card-comment">
+                <div class="card-body">
+                    <div class="comment-nav">
+                        <div class="comment-creator">
+                            <h5>@post.UserUserName</h5>
+                        </div>
+                        <div class="comment-date">
+                            <h5>@post.CreatedOn</h5>
+                        </div>
+                        <div class="comment-rating">
+                            <h4>Rating:10</h4>
+                        </div>
+                    </div>
+                    <div class="comment-description">
+                        <p>@post.Content</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 
+@foreach (var post in Model.UserPosts)
+{ 
+    <div id="myList">
+        <form id="comment-form" method="post" asp-controller="UserAcc" asp-action="Create">
+            <div class="form-group"> 
+                <input asp-for="@Model.Id" type="hidden" class="form-control" id="exampleFormControlInput1">
+                <input asp-for="@Model.Name" type="hidden" class="form-control" id="exampleFormControlInput1">
+            </div>
+
+            <div class="form-group">
+                <textarea asp-for="@post.Content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg" value="search">ADD Comment</button>
+        </form>
+
+    </div>
+}
+
+
+<script>
+    function myFunction() {
+
+        var node = document.createElement("div");
+        node.innerHTML = `
+
+  <form id="comment-form" method="post" asp-controller="UserAcc" asp-action="Create">
+  <div class="form-group">
+
+  <input asp-for="@Model.Id" type="hidden" class="form-control" id="exampleFormControlInput1">
+  <input asp-for="@Model.Name" type="hidden" class="form-control" id="exampleFormControlInput1">
+  </div>
+
+  <div class="form-group">
+  <textarea asp-for="Content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  </form>
+  <button type="submit" class="btn btn-success btn-lg" value="search" >ADD Comment</button>
+  `
+
+        document.getElementById("myList").appendChild(node);
+    }
+
+</script>
+

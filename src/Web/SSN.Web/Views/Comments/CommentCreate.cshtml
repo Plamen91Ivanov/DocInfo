@@ -1,0 +1,65 @@
+﻿@model SSN.Web.ViewModels.Posts.PostViewModel
+@{
+    this.ViewData["Title"] = "Разкажете вашата история";
+}
+<style> 
+    #comment-form {
+        padding-left: 250px;
+        padding-right: 250px;
+    }
+
+    input {
+        box-shadow: 0 0 1px 1px black;
+    }
+
+    textarea {
+        box-shadow: 0 0 1px 1px black;
+    }
+</style>
+ 
+<div class="card-comment">
+    <div class="comment-nav">
+        <div class="comment-creator">
+            <a href="#">
+                <h5>@Model.UserUserName</h5>
+            </a>
+        </div>
+        <div class="comment-rating">
+            <h5>@Model.CreatedOn</h5>
+        </div>
+    </div>
+    <div class="comment-description">
+        <a href="#">
+            <p>@Model.Content</p>
+        </a>
+    </div>
+    <div class="row"> 
+        <div class="col-4">
+            <h5>0 comments</h5>
+        </div> 
+    </div>
+</div>
+  
+<div class="row">
+    <div class="col text-center">
+        <form id="comment-form" method="post" asp-controller="Comments" asp-action="Create">
+            <div class="form-group">
+                <input type="hidden" name="ParentId" value="0" />
+                <input type="hidden" name="PostId" value="@this.Model.Id" />
+                <label id="comment-label" for="exampleFormControlTextarea1"></label>
+                <textarea name="Content" id="Content" class="form-control" rows="5"></textarea>
+
+                <br />
+                <div class="row">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-success btn-lg" value="search">Добавете Коментар</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+

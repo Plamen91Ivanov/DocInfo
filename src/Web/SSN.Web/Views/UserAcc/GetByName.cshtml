@@ -1,0 +1,436 @@
+﻿@using SSN.Common
+@using SSN.Data.Models
+@using Microsoft.AspNetCore.Identity
+@model SSN.Web.ViewModels.UserAcc.UserAccViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject SSN.Services.Data.VoteUserService VoteUserService
+@inject SSN.Services.Data.VotePostsService VotePostsService
+
+@{
+    var photoPath = "~/Images/" + (Model.FilePath ?? "man.jpg");
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .main {
+        display: flex;
+    }
+
+    .navigation {
+        width: 100%;
+        height: 30px;
+    }
+
+    .card-body-div {
+        display: flex;
+        border: 1px solid rgb(12, 194, 185);
+        background-color: white;
+        box-shadow: 0 0 5px 1px #348de0;
+        border-radius: 10px;
+    }
+
+    .card-description {
+        display: inline;
+        height: 50%;
+    }
+
+    .card-info-img {
+        width: 80%;
+        height: 22%;
+    }
+
+    .card-info {
+        display: inline;
+        width: 35%;
+        height: 100%;
+        padding: 20px;
+    }
+
+
+    .card-comments {
+        display: block;
+        padding: 5px;
+        padding-right: 20px;
+        width: 90%;
+    }
+
+    .card-comment {
+        display: block;
+        width: 100%;
+        text-align: justify;
+    }
+
+    .card-body {
+    }
+
+
+    .comment-nav {
+    }
+
+    .comment-description {
+        border: 1px solid #348de0;
+        box-shadow: 0 0 5px 1px rgb(12, 194, 185);
+        border-radius: 10px;
+        height: 80px;
+        padding: 10px;
+        margin: 5px;
+        margin-bottom: 10px;
+    }
+
+    .comment-creator h5 {
+        color: forestgreen;
+    }
+
+    .comment-date {
+        color: forestgreen;
+    }
+
+    .comment-description p {
+        color: forestgreen;
+    }
+
+    .comment-div {
+        border: 2px solid black;
+    }
+
+    .comments-count h5 {
+        color: forestgreen;
+    }
+
+    #createBtn {
+        width: 95%;
+    }
+
+    .comment-btn {
+        justify-content: center;
+        align-items: normal;
+    }
+</style>
+
+@section commentBtn{
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-controller="UserAcc" asp-action="Create" method="post" id="AddCommentForm">
+                <input type="hidden" name="Id" class="btn btn-success btn-lg" value="@Model.Id" />
+                <input type="hidden" name="Name" class="btn btn-success btn-lg" value="@Model.Name" />
+                <input type="submit" class="btn btn-success btn-lg" value="Добавете Коментар" />
+            </form>
+        </div>
+    </div>
+}
+<hr />
+
+
+ 
+
+<div class="container-fluid">
+    <div class="main row">
+        <div class="col-md-10">
+            <div class="card-body-div">
+                <div class="card-info">
+                    <img class="card-info-img profile-image" src="~/images/blank_user.png" asp-append-version="true">
+                    <hr />
+                    <div class="card-description">
+                        <div class="ml-3 row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div id="upVotesCount">
+                                        <a href="#" onclick="sendVote(@Model.Id,true)"><h3 class="text-success">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(Model.Id)</h3></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div id="votesDownCount">
+                                        <a href="#" onclick="sendVote(@Model.Id, false)"><h3 class="text-danger"><i class="fa fa-thumbs-down text-"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(Model.Id))</h3> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="ml-3 row">
+                            <div class="row">
+                                <h4>@Model.Name</h4>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="ml-3 row">
+                            <div class="row">
+                                <h5>@Model.Specialty</h5>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="ml-3 row">
+                            <div class="row">
+                                <h5>Гр. @Model.City</h5>
+                            </div>
+                        </div>
+                    </div> 
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div>
+                        <div class="container-fluid  ">
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" id="image-carousel" src="~/images/hos1.jpg" alt="First slide">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" id="image-carousel" src="~/images/hos2.jpg" alt="Second slide">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" id="image-carousel" src="~/images/hos3.jpg" alt="Third slide">
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                </div> 
+                <div class="card-comments">
+                    @foreach (var post in Model.UserPosts)
+                    {
+                        <div class="card-comment">
+                            <div class="comment-nav">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="comment-creator">
+                                            <a href="#">
+                                                <h5>@post.UserUserName</h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-4"> 
+                                    </div>
+                                    <div class="col-1">
+                                        @if ((this.User.Identity.Name) == "user1@gmail.com")
+                                        {
+                                            <form id="comment-form" style="margin:0px" method="post" asp-controller="UserAcc" asp-action="DeleteComment">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="PostId" value="@post.Id" class="form-control" />
+                                                    <input type="hidden" name="Name" value="@Model.Name" class="form-control" />
+                                                    <div class="row">
+                                                        <div class="col text-center">
+                                                            <button type="submit"><i class="fas fa-times" style="color:red"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="comment-date">
+                                            <h5>@post.FormatedDate</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-description">
+                                <a href="#">
+                                    <p>@post.ShortContent</p>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+
+                                </div>
+                                <h3 class="text-success">@VotePostsService.GetVote(post.Id)</h3>&nbsp;&nbsp;&nbsp;&nbsp; <h3 class="text-danger">@Math.Abs(@VotePostsService.GetDownVote(post.Id))</h3>
+
+                                <div class="col-1">
+
+                                </div>
+                                <div class="col-4 comments-count">
+                                    <a href="/Posts/ById/@post.Id">
+                                        <h5>@post.CommentsCount Коментара</h5>
+                                    </a>
+                                </div>
+                                <div class="col-1">
+                                    <form asp-controller="Comments" asp-action="CommentCreate" method="post" id="AddCommentForm">
+                                        <input type="hidden" name="Id" class="btn btn-success btn-lg" value="@Model.Id" />
+                                        <input type="hidden" name="Name" class="btn btn-success btn-lg" value="@Model.Name" />
+                                        <input type="hidden" name="PostId" class="btn btn-success btn-lg" value="@post.Id" />
+                                        <input type="submit" class="btn btn-outline-success btn-md" value="Коментар" />
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="ad">
+                <div class="container-fluid  ">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos1.jpg" alt="First slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos2.jpg" alt="Second slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos3.jpg" alt="Third slide">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+                <div class="container-fluid  ">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos1.jpg" alt="First slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos2.jpg" alt="Second slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos3.jpg" alt="Third slide">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+                <div class="container-fluid  ">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos1.jpg" alt="First slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos2.jpg" alt="Second slide">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" id="image-carousel" src="~/images/hos3.jpg" alt="Third slide">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function showAddCommentForm(parentId) {
+            $("#AddCommentForm input[name='ParentId']").val(parentId);
+            $("#AddCommentForm").toggle();
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#AddCommentForm").offset().top
+            }, 1000);
+
+        }
+
+
+        function sendVote(UserAccId, isUpVote) {
+            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var json = { UserAccId: UserAccId, isUpVote: isUpVote }; 
+            $.ajax({
+                url: "/api/votes",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) { 
+                    $("#upVotesCount").html(data.upVotesCount);
+                    $("#votesDownCount").html(data.votesDownCount);
+                }
+            });
+        }
+
+        function sendPostVote(PostId, isUpVote) {
+            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
+            var json = { PostId: PostId, isUpVote: isUpVote };
+            console.log(json);
+            $.ajax({
+                url: "/api/postVotes",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: { 'X-CSRF-TOKEN': token },
+                success: function (data) {
+                    console.log(data.upVotesCount);
+                    console.log(data.downVotesCount);
+                    $("#UpPostVotesCount").html(data.upVotesCount);
+                    $("#DownPostVotesCount").html(data.downVotesCount);
+                }
+            });
+        }
+    </script>
+}
+
+<!--
+    <div id="myList">
+        <form id="comment-form" method="post" asp-controller="UserAcc" asp-action="Create">
+            <div class="form-group">
+
+                <input asp-for="Model.Id" type="hidden" class="form-control" id="exampleFormControlInput1">
+                <input asp-for="Model.Name" type="hidden" class="form-control" id="exampleFormControlInput1">
+            </div>
+
+            <div class="form-group">
+                <textarea asp-for="Content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg" value="search">ADD Comment</button>
+        </form>
+
+    </div>
+</div>
+    -->

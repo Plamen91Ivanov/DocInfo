@@ -1,0 +1,130 @@
+﻿@model SSN.Web.ViewModels.UserAcc.SearchUsersViewModel
+@{
+    this.ViewData["Title"] = "Home Page";
+}
+
+<style>
+    input {
+        box-shadow: 0 0 1px 1px black;
+    }
+
+    select {
+        box-shadow: 0 0 1px 1px black;
+    }
+
+    .result {
+        border-radius: 5px;
+        width: 50%;
+    }
+
+    .home-box {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .main-card {
+        width: 100%;
+        background-color: rgb(236, 245, 237);
+        box-shadow: 0 0 3px 3px rgb(225, 241, 227);
+        border-radius: 20px;
+        margin: 10px;
+    }
+
+    .doctor-card-body {
+        width: 100%;
+        display: flex;
+        margin: 10px;
+    }
+
+    .card-image {
+        width: 130px;
+        height: 170px;
+        border-radius: 25px;
+        margin: 10px 20px 10px 10px;
+    }
+
+    .card-img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .card-information {
+        margin: 10px 20px 10px 20px;
+    }
+
+    .card-rating {
+        margin: 10px 20px 10px 20px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .doctor-information {
+        display: flex;
+        border: 1px solid black;
+    }
+
+    .doctor-comment {
+        width: 50%;
+        margin: 0px 0px 0px 25px;
+    }
+
+    #search-box {
+        padding-right: 130px;
+    }
+
+    #image-carousel {
+        width: 470px;
+        height: 270px;
+        border-radius: 10px;
+    }
+
+    #doctor-title {
+        margin-bottom: 25px;
+    }
+
+    #doctor-city {
+        margin-bottom: 25px;
+    }
+
+    #doctor-specialty {
+    }
+</style>
+<div class="home-box">
+
+    <div class="container" id="search-box">
+        <div class="text-left">
+            <form method="post" asp-action="searchUser">
+                <label for="exampleFormControlInput1">Search User</label>
+                <input autocomplete="off" type="text" class="form-control form-control-lg" name="email" id="search" placeholder="Search by email">
+                <br />
+                <button type="submit" class="btn btn-primary" value="Search">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+<hr />
+
+<div class="result">
+    
+        @foreach (var user in Model.Users)
+        {
+
+            <div class="main-card">
+                <div class="doctor-card-body">
+                    <div class="card-image">
+                        <a href="@user.Url">
+                            <img class="card-img" src="~/images/prof-imig.jpg" alt="Card image cap">
+                           
+                        </a>
+                    </div>
+                    <div class="card-information">
+                        <h5 id="doctor-title" class="doctor-title">@user.Email</h5>
+                    </div>
+                </div>
+            </div>
+        }
+
+     
+</div>
+  

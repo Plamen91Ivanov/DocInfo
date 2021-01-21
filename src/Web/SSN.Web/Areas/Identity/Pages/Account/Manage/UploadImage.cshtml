@@ -1,0 +1,22 @@
+﻿@page
+@model UploadImage
+
+
+<form enctype="multipart/form-data" method="post" asp-area="" asp-controller="UserAcc" asp-action="UploadPhoto">
+    <label asp-for="Photo"></label>
+    <input asp-for="Photo" class="form-control-file btn-success btn-lg" id="exampleFormControlFile1">
+    <button type="submit" class="btn btn-success btn-lg" value="search">ADD Image</button>
+</form>
+
+<form enctype="multipart/form-data" method="post" asp-action="UploadPhoto">
+    <button type="submit" class="btn btn-success btn-lg" value="search">SAVE</button>
+</form>
+
+@foreach (var image in Model.Images)
+{
+        <img src="~/images/@image.FilePath" alt="Alternate Text" />
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
