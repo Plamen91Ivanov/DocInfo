@@ -1,8 +1,6 @@
 # DocInfo
 
-A simple asp.net core MVC app 
- 
-Will be ready at 22.01.2020 8:00h
+A simple asp.net core MVC app  
 
 https://docinfo.azurewebsites.net/
 
