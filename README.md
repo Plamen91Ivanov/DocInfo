@@ -12,6 +12,8 @@ Functionality
   
  -write comments
   
+ -remove comment(if you are admin)
+  
  -voting system
   
  
